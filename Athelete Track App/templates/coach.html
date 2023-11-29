@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Routine with Calories and BMI Calculator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Add these lines to include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <!-- Video Background -->
+    <video autoplay muted loop id="video-background">
+        <!-- Replace 'your-video-source' with the actual URL of the video -->
+        <source src="C:\Users\gokul\Desktop\Athelete Track App\loop.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="overlay"></div>
+
+    <!-- Cardiovascular Exercises Modal -->
+    <div class="modal fade" id="cardioModal" tabindex="-1" role="dialog" aria-labelledby="cardioModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cardioModalLabel">Cardiovascular Exercises</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Content of Cardiovascular Exercises -->
+                    <ul>
+                        <li>Running/Jogging</li>
+                        <li>Cycling</li>
+                        <li>Swimming</li>
+                        <li>Jump Rope</li>
+                        <li>Elliptical Trainer</li>
+                        <li>Rowing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cardiovascular Exercises -->
+    <h2 data-toggle="modal" data-target="#cardioModal">Cardiovascular Exercises</h2>
+
+    <!-- Strength Training Exercises Modal -->
+    <div class="modal fade" id="strengthModal" tabindex="-1" role="dialog" aria-labelledby="strengthModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="strengthModalLabel">Strength Training Exercises</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Content of Strength Training Exercises -->
+                    <ul>
+                        <li>Squats</li>
+                        <li>Deadlifts</li>
+                        <li>Bench Press</li>
+                        <li>Overhead Press</li>
+                        <li>Pull-Ups/Chin-Ups</li>
+                        <li>Push-Ups</li>
+                        <li>Planks</li>
+                        <li>Lunges</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Strength Training Exercises -->
+    <h2 data-toggle="modal" data-target="#strengthModal">Strength Training Exercises</h2>
+
+    <!-- Add Calories Calculator Section -->
+    <div id="calculator" class="container mt-4">
+        <h2 class="bg-light p-2 rounded">Calories Calculator</h2>
+        <form>
+            <div class="form-group">
+                <label for="exercise">Select Cardio Exercise:</label>
+                <select id="exercise" class="form-control">
+                    <option value="running">Running/Jogging</option>
+                    <option value="cycling">Cycling</option>
+                    <option value="swimming">Swimming</option>
+                    <option value="jump_rope">Jump Rope</option>
+                    <option value="elliptical">Elliptical Trainer</option>
+                    <option value="rowing">Rowing</option>
+                </select>
+            </div>
+    
+            <div class="form-group">
+                <label for="duration">Duration (minutes):</label>
+                <input type="number" id="duration" class="form-control" min="1" value="30">
+            </div>
+    
+            <div class="form-group">
+                <label for="sets">Number of Sets:</label>
+                <input type="number" id="sets" class="form-control" min="1" value="1">
+            </div>
+    
+            <button type="button" class="btn btn-primary" onclick="calculateCalories()">Calculate Calories</button>
+    
+            <p id="result" class="mt-3"></p>
+        </form>
+           
+        <!-- BMI Calculator Modal -->
+    <div class="modal fade" id="bmiModal" tabindex="-1" role="dialog" aria-labelledby="bmiModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bmiModalLabel">BMI Calculator</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Content of BMI Calculator -->
+                    <div class="form-group">
+                        <label for="height">Height (cm):</label>
+                        <input type="number" id="height" class="form-control" min="1" placeholder="Enter height in centimeters">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="weight">Weight (kg):</label>
+                        <input type="number" id="weight" class="form-control" min="1" placeholder="Enter weight in kilograms">
+                    </div>
+
+                    <button type="button" class="btn btn-primary" onclick="calculateBMI()">Calculate BMI</button>
+
+                    <p id="bmiResult" class="mt-3"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BMI Calculator -->
+    <h2 data-toggle="modal" data-target="#bmiModal">BMI Calculator</h2>
+    </div>
+
+    <!-- ... (other sections) -->
+
+    <script>
+        function calculateCalories() {
+            // Calories burned per minute for each exercise (approximate values)
+            const calorieData = {
+                running: 11.4,
+                cycling: 8.0,
+                swimming: 7.0,
+                jump_rope: 12.0,
+                elliptical: 9.0,
+                rowing: 9.8,
+            };
+
+            const exercise = document.getElementById("exercise").value;
+            const duration = parseFloat(document.getElementById("duration").value);
+            const sets = parseInt(document.getElementById("sets").value);
+
+            if (isNaN(duration) || duration <= 0 || isNaN(sets) || sets <= 0) {
+                alert("Please enter valid values for duration and sets.");
+                return;
+            }
+
+            const caloriesBurnedPerSet = calorieData[exercise] * duration;
+            const totalCaloriesBurned = caloriesBurnedPerSet * sets;
+
+            document.getElementById("result").innerHTML = `Estimated calories burned: ${totalCaloriesBurned.toFixed(2)} calories`;
+        }
+
+        function calculateBMI() {
+            const height = parseFloat(document.getElementById("height").value);
+            const weight = parseFloat(document.getElementById("weight").value);
+
+            if (isNaN(height) || height <= 0 || isNaN(weight) || weight <= 0) {
+                alert("Please enter valid values for height and weight.");
+                return;
+            }
+
+            const heightInMeters = height / 100;
+            const bmi = weight / (heightInMeters * heightInMeters);
+
+            document.getElementById("bmiResult").innerHTML = `Your BMI is: ${bmi.toFixed(2)}`;
+        }
+    </script>
+
+</body>
+</html>
